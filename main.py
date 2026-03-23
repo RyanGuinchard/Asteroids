@@ -12,18 +12,28 @@ def main():
     print("Starting Asteroids with pygame version: " + pygame.version.ver)
     print("Screen width: " + str(c.SCREEN_WIDTH))
     print("Screen height: " + str(c.SCREEN_HEIGHT))
+
+    # Setup the game
     screen = pygame.display.set_mode((c.SCREEN_WIDTH, c.SCREEN_HEIGHT))
+    running = True
+
+    updatable =pygame.sprite.Group()
+    drawable = pygame.sprite.Group()
+    Player.containers = (updatable, drawable)
+    
+    player = Player(c.SCREEN_WIDTH / 2, c.SCREEN_HEIGHT / 2)
+    
 
     # Main game loop
-    running = True
     while running:
         log_state()
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 return
         screen.fill((0, 0, 0))
-        player = Player(c.SCREEN_WIDTH / 2, c.SCREEN_HEIGHT / 2)
-        player.draw(screen)
+        for d in drawable:
+            d.draw(screen)
+        updatable.update(dt)
         pygame.display.flip()
         dt = clock.tick(60) / 1000.0
 
